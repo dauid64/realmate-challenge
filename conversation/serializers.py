@@ -10,7 +10,7 @@ class MessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['id', 'content', 'type', 'created_at', 'started_at']
-        ordering = ['created_at']
+        ordering = ['started_at']
     
 
 class ConversationSerializer(serializers.ModelSerializer):

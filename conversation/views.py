@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
@@ -6,6 +7,9 @@ from conversation.serializers import ConversationSerializer, WebHookSerializer
 from rest_framework.generics import RetrieveAPIView
 
 from rest_framework import status
+
+from django.views.generic import View
+from django.shortcuts import get_object_or_404
 
 
 class WeebhookView(APIView):
@@ -60,3 +64,15 @@ class ConversationDetailView(RetrieveAPIView):
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
     lookup_field = 'id'
+
+class ConversationDetailHTMLView(View):
+    def get(self, request, id,*args, **kwargs):
+        conversation = get_object_or_404(Conversation, id=id)
+        messages = Message.objects.filter(conversation=conversation).order_by('started_at')
+        
+        return render(
+            request, 
+            'conversation/pages/detail.html', {
+            'conversation': conversation,
+            'messages': messages,
+        })
