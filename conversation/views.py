@@ -2,7 +2,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from conversation.models import Conversation, Message
-from conversation.serializers import WebHookSerializer
+from conversation.serializers import ConversationSerializer, WebHookSerializer
+from rest_framework.generics import RetrieveAPIView
 
 from rest_framework import status
 
@@ -54,3 +55,8 @@ class WeebhookView(APIView):
             conversation.closed_at = timestamp
             conversation.save()
             return Response(status=status.HTTP_200_OK)
+        
+class ConversationDetailView(RetrieveAPIView):
+    queryset = Conversation.objects.all()
+    serializer_class = ConversationSerializer
+    lookup_field = 'id'
