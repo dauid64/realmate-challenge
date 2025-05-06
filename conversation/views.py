@@ -54,5 +54,3 @@ class WeebhookView(APIView):
             conversation.closed_at = timestamp
             conversation.save()
             return Response(status=status.HTTP_200_OK)
-
-        return Response(data)
